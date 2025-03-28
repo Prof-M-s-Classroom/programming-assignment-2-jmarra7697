@@ -1,4 +1,1 @@
-/Applications/CLion.app/Contents/bin/cmake/mac/aarch64/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "Unix Makefiles" -S /Users/familiarnm/CLionProjects/programming-assignment-2-jmarra7697 -B /Users/familiarnm/CLionProjects/programming-assignment-2-jmarra7697/cmake-build-debug
--- Configuring done (0.0s)
--- Generating done (0.0s)
--- Build files have been written to: /Users/familiarnm/CLionProjects/programming-assignment-2-jmarra7697/cmake-build-debug
+CMakeLists.txt not found in /Users/familiarnm/CLionProjects/programming-assignment-2-jmarra7697 Select CMakeLists.txt
