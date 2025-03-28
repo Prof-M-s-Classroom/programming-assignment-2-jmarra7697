@@ -14,14 +14,18 @@ class GameDecisionTree {
 private:
     Node<T>* root;
     std::unordered_map<int, Node<T>*> eventMap;
-
+    bool hasNodes;
 public:
-    // TODO: Constructor
-    GameDecisionTree() : root(nullptr) {}
+    // Constructor
+    GameDecisionTree() : root(nullptr), hasNodes(true) {}
 
-    // Destructor
+    // Destructor, only deletes nodes if they exist
     ~GameDecisionTree() {
-        deleteTree(root);
+        if (hasNodes) {
+            for (auto& pair : eventMap) {
+                delete pair.second;
+            }
+        }
     }
 
     // Helper function to delete entire tree if needed
@@ -68,9 +72,9 @@ public:
             // stores index in event map
             eventMap[eventNum] = newNode;
 
-            // if this is first node, then set the root to NewNode<T>
-            if (root == nullptr) {
-                root = new Node<T>();
+            // if this is first node, then set the root to newNode;
+            if (eventNum == 1) {
+                root = newNode;
             }
         }
         connectNodes();
@@ -78,12 +82,14 @@ public:
 
     // helper function that will connect nodes based on certain event numbers
     void connectNodes() {
+        hasNodes = false;
         for (auto& pair : eventMap) {
             Node<T>* currentNode = pair.second;
             // connects left child
             if (currentNode->data.leftEventNumber != -1) {
                 currentNode->left = eventMap[currentNode->data.leftEventNumber];
             }
+            // connects right child
             if (currentNode->data.rightEventNumber != -1) {
                 currentNode->right = eventMap[currentNode->data.rightEventNumber];
             }
@@ -103,7 +109,7 @@ public:
 
             // checks if this is a state where the story ends and there are no more paths
             if (currentNode->left == nullptr && currentNode->right == nullptr) {
-                std::cout << "Your story has ended. Try and find more paths in the other choices!" << std::endl;
+                std::cout << "THE END" << std::endl;
                 break;
             }
 
@@ -111,8 +117,12 @@ public:
             int choice = -1;
             if (currentNode-> left != nullptr && currentNode->right != nullptr) {
                 while (choice != 1 && choice != 2) {
-                    std::cout << "Enter choice 1 or 2: ";
+                    std::cout << "Enter option 1 or 2: ";
                     std::cin >> choice;
+                    if (choice != 1 && choice != 2) {
+                        std::cerr << "Your input is invalid. Restart the program and answer using only 1 or 2." << std::endl;
+                        return;
+                    }
                 }
                 // moves to whatever path is chosen
                 currentNode = (choice == 1) ? currentNode->left : currentNode->right;
